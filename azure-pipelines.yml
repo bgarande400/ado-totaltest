@@ -1,0 +1,117 @@
+trigger:
+- none
+
+variables:
+  - group: GenericVars.CI.A
+  - name: System.Debug
+    value: 'true'
+
+jobs:
+- job: job_quality_assessment_cobol
+  displayName: 'Quality assessment of COBOL Components'
+  variables:
+#    devx_set_task_list: $[dependencies.job_validate_set.outputs['task_validate_set.devx_set_task_list']]
+    job_name: 'job_quality_assessment_cobol'
+#  dependsOn: job_validate_set
+#  condition: contains(dependencies.job_validate_set.outputs['task_validate_set.devx_task_types'], 'COB')
+  workspace:
+    clean: all
+  pool:
+    name: 'SelfHostAgentTest'
+    demands:
+      - Docker
+  container:
+    image: $(DOCKER_IMAGE)
+    endpoint: 'nx3-build-images-sc'
+    env:
+      DEVX_APPLICATION: $(ispwApplication)
+      DEVX_ASSIGNMENT: $(ispwContainerName)
+      DEVX_SET: $(ispwSet)
+      DEVX_LEVEL: $(ispwLevel)
+      DEVX_SET_OWNER: $(owner)
+      DEVX_DEVELOPMENT_RELEASE: $(DEVX_DEVELOPMENT_RELEASE)
+      DEVX_ONBOARDED_APPLICATIONS: $(DEVX_ONBOARDED_APPLICATIONS)
+      DEVX_RUNTIME_CONFIGURATION: $(DEVX_RUNTIME_CONFIGURATION)
+      PEM_CERTIFICATE: $(PEM_CERTIFICATE)
+      CES_HOST_URL: $(CES_HOST_URL)
+      CES_INSTANCE: $(CES_INSTANCE)
+      HCI_HOST: $(HCI_HOST)
+      HCI_PORT: $(HCI_PORT)
+      HCI_COPYBOOK_DATASET: $(HCI_COPYBOOK_DATASET)
+      HCI_EMAIL_DATASET: $(HCI_EMAIL_DATASET)
+      HCI_TARGET_DIRECTORY: $(HCI_TARGET_DIRECTORY)
+      HCI_TIMEOUT: $(HCI_TIMEOUT)
+      TOTAL_TEST_CONFIGURATION_REPO: $(TOTAL_TEST_CONFIGURATION_REPO)
+      TOTAL_TEST_LOG_LEVEL: $(TOTAL_TEST_LOG_LEVEL)
+      CODE_COVERAGE_REPO: $(CODE_COVERAGE_REPO)
+      JASPR_HOST_URL: $(JASPR_HOST_URL)
+      BUILDER_USER: $(SONAR_USER)
+      BUILDER_PASSWORD: $(SONAR_PASSWORD)
+      SONAR_HOST_URL: $(SONAR_HOST_URL)
+      SONAR_BASE_PROJECT: $(SONAR_BASE_PROJECT)
+      SONAR_BASE_PROJECT_DIRECTORY: $(SONAR_BASE_PROJECT_DIRECTORY)
+      ADO_HOST_URL: $(ADO_HOST_URL)
+      ADO_ORGANIZATION: $(ADO_ORGANIZATION)
+      ADO_PROJECT: $(ADO_PROJECT) 
+      ADO_PAT: $(System.AccessToken)
+      DEFAULT_EMAIL_ID: $(DEFAULT_EMAIL_ID)
+      CI_PIPELINE_TEAMS_LINK: $(CI_PIPELINE_TEAMS_LINK)
+      ARTIFACT_DIRECTORY: $(job_name)
+      DEVX_SET_TASK_LIST: $(devx_set_task_list)
+  steps:
+  - task: PythonScript@0
+    displayName: 'Download COBOL Source'
+    name: task_download_source_cobol
+    inputs:
+      pythonInterpreter: '/usr/local/bin/python'
+      scriptPath: '/opt/src/cimf_scripts/bin/download_source.py'
+      arguments: '"COB"'
+  - task: PythonScript@0
+    displayName: 'Download COPY Source'
+    name: task_download_source_copy
+    inputs:
+      pythonInterpreter: '/usr/local/bin/python'
+      scriptPath: '/opt/src/cimf_scripts/bin/download_copy.py'
+  - task: PythonScript@0
+    displayName: 'Download Unit Test Project'
+    name: task_download_unit_test_project
+    inputs:
+      pythonInterpreter: '/usr/local/bin/python'
+      scriptPath: '/opt/src/cimf_scripts/bin/download_unit_test_project.py'
+  - task: CmdLine@2
+    inputs:
+      script: |
+        cd /tmp
+        ls -lartiR
+        cat /tmp/target/MF_Test/TTTConfiguration/TotalTestConfiguration/JCLSkeletons/JobCard.jcl
+        echo "Before changes"
+        echo "//ZA0882Q JOB ('SW00000'),'TTT',CLASS=L,MSGCLASS=G,REGION=0M" > /tmp/target/MF_Test/TTTConfiguration/TotalTestConfiguration/JCLSkeletons/JobCard.jcl
+        echo "After changes"
+        cat /tmp/target/MF_Test/TTTConfiguration/TotalTestConfiguration/JCLSkeletons/JobCard.jcl
+  - task: CmdLine@2
+    displayName: TTT, Username & CC
+    inputs:
+      script: |
+        TotalTestFTCLI.sh -configuration /tmp/target/configuration -a SW00000 -S QA/MF_Source -host $(HCI_HOST) -port $(HCI_PORT) -code 1047 -data /tmp/target/data/total_test -r /tmp/target -f MF_Test/QA612Q -R -G -v 6 -log $(TOTAL_TEST_LOG_LEVEL) -ccclear true -ccrepo $(CODE_COVERAGE_REPO) -ccsys $(CODE_COVERAGE_SYSTEM) -cctid $(CODE_COVERAGE_TEST) -cfgdir /tmp/target/MF_Test/TTTConfiguration/TotalTestConfiguration -u $(HCI_USER) -p $(HCI_PASSWORD) 
+        echo "After CLI execution"
+        cat /tmp/target/data/total_test/.metadata/.log
+        ls -lartiR /tmp/target/MF_Test/QA612Q
+        cd /tmp/target/MF_Test/QA612Q/Output
+        echo "QA612Q.cli.suiteresult"
+        cat QA612Q.cli.suiteresult
+        echo "QA612Q.cli.suite.sonar.xml"
+        cat QA612Q.cli.suite.sonar.xml
+        echo "QA612Q.cli.sonar.codecoverage.xml"
+        cat QA612Q.cli.sonar.codecoverage.xml
+        echo "QA612Q.cli.suite.junit.xml"
+        cat QA612Q.cli.suite.junit.xml
+  - task: CmdLine@2
+    displayName: Username & CC
+    inputs:
+      script: |         
+        CodeCoverageCLI.sh -configuration /tmp/target/configuration -host $(HCI_HOST) -port $(HCI_PORT) -code 1047 -data /tmp/target/data/code_coverage -cc.repos $(CODE_COVERAGE_REPO) -cc.system $(CODE_COVERAGE_SYSTEM) -cc.test $(CODE_COVERAGE_TEST) -cc.sources /tmp/target/QA/MF_Source,/tmp/target/MF_Copy/QA612Q -targetFolder /tmp/target/MF_Test/QA612Q -id $(HCI_USER) -pass $(HCI_PASSWORD) -r /tmp/target -v 6 -log $(TOTAL_TEST_LOG_LEVEL) -cfgdir /tmp/target/MF_Test/TTTConfiguration/TotalTestConfiguration
+        echo "After CLI execution"
+        cat /tmp/target/data/total_test/.metadata/.log
+        ls -lartiR /tmp/target/MF_Test/QA612Q
+        cd /tmp/target/MF_Test/QA612Q/Coverage
+        cat CodeCoverage.xml
