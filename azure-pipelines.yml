@@ -22,7 +22,7 @@ jobs:
       - Docker
   container:
     image: $(DOCKER_IMAGE)
-    endpoint: 'nx3-build-images-sc'
+    endpoint: 'docker-build-images-sc'
     env:
       DEVX_APPLICATION: $(ispwApplication)
       DEVX_ASSIGNMENT: $(ispwContainerName)
