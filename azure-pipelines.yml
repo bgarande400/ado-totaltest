@@ -85,6 +85,7 @@ jobs:
   - task: Bash@3
     displayName: Update JOB Card
     inputs:
+      targetType: 'inline'
       script: |
         echo "check current directory"
         pwd
@@ -97,6 +98,7 @@ jobs:
   - task: Bash@3
     displayName: TTT, Username & CC
     inputs:
+      targetType: 'inline'
       script: |
         TotalTestFTCLI.sh -configuration /opt/target/configuration -a SW00000 -S QA/MF_Source -host $(HCI_HOST) -port $(HCI_PORT) -code 1047 -data /opt/target/data/total_test -r /tmp/target -f MF_Test/QA612Q -R -G -v 6 -log $(TOTAL_TEST_LOG_LEVEL) -ccclear true -ccrepo $(CODE_COVERAGE_REPO) -ccsys $(CODE_COVERAGE_SYSTEM) -cctid $(CODE_COVERAGE_TEST) -cfgdir /opt/MF_Test/BMC%20AMI%20DevX%20Total%20Test/TotalTestConfiguration -u $(HCI_USER) -p $(HCI_PASSWORD) 
         echo "After CLI execution"
@@ -114,6 +116,7 @@ jobs:
   - task: Bash@3
     displayName: Username & CC
     inputs:
+      targetType: 'inline'
       script: |         
         CodeCoverageCLI.sh -configuration /tmp/target/configuration -host $(HCI_HOST) -port $(HCI_PORT) -code 1047 -data /tmp/target/data/code_coverage -cc.repos $(CODE_COVERAGE_REPO) -cc.system $(CODE_COVERAGE_SYSTEM) -cc.test $(CODE_COVERAGE_TEST) -cc.sources /tmp/target/QA/MF_Source,/tmp/target/MF_Copy/QA612Q -targetFolder /tmp/target/MF_Test/QA612Q -id $(HCI_USER) -pass $(HCI_PASSWORD) -r /tmp/target -v 6 -log $(TOTAL_TEST_LOG_LEVEL) -cfgdir /tmp/target/MF_Test/BMC%20AMI%20DevX%20Total%20Test/TotalTestConfiguration
         echo "After CLI execution"
