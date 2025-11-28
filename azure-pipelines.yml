@@ -60,6 +60,8 @@ jobs:
       DEVX_SET_TASK_LIST: $(devx_set_task_list)
       HCI_PASSWORD: $(HCI_PASSWORD)
       HCI_USER: $(HCI_USER)
+      CONTAINER_TYPE: $(CONTAINER_TYPE)
+      SERVER_LEVEL: $SERVER_LEVEL)
   steps:
   - task: PythonScript@0
     displayName: 'Download COBOL Source'
