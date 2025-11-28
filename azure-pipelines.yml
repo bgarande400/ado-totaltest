@@ -88,39 +88,39 @@ jobs:
       targetType: 'inline'
       script: |
         echo "check current directory"
-        pwd
+        cd /opt
         ls -lartiR
-        cat /opt/MF_Test/BMC%20AMI%20DevX%20Total%20Test/TotalTestConfiguration/JCLSkeletons/JobCard.jcl
+        cat /MF_Test/BMC%20AMI%20DevX%20Total%20Test/TotalTestConfiguration/JCLSkeletons/JobCard.jcl
         echo "Before changes"
-        echo "//ZA0882Q JOB ('SW00000'),'TTT',CLASS=L,MSGCLASS=G,REGION=0M" > /opt/MF_Test/BMC%20AMI%20DevX%20Total%20Test/TotalTestConfiguration/JCLSkeletons/JobCard.jcl
+        echo "//ZA0882Q JOB ('SW00000'),'TTT',CLASS=L,MSGCLASS=G,REGION=0M" > /MF_Test/BMC%20AMI%20DevX%20Total%20Test/TotalTestConfiguration/JCLSkeletons/JobCard.jcl
         echo "After changes"
-        cat /opt/MF_Test/BMC%20AMI%20DevX%20Total%20Test/TotalTestConfiguration/JCLSkeletons/JobCard.jcl
+        cat /MF_Test/BMC%20AMI%20DevX%20Total%20Test/TotalTestConfiguration/JCLSkeletons/JobCard.jcl
   - task: Bash@3
     displayName: TTT, Username & CC
     inputs:
       targetType: 'inline'
       script: |
-        TotalTestFTCLI.sh -configuration /opt/target/configuration -a SW00000 -S QA/MF_Source -host $(HCI_HOST) -port $(HCI_PORT) -code 1047 -data /opt/target/data/total_test -r /tmp/target -f MF_Test/QA612Q -R -G -v 6 -log $(TOTAL_TEST_LOG_LEVEL) -ccclear true -ccrepo $(CODE_COVERAGE_REPO) -ccsys $(CODE_COVERAGE_SYSTEM) -cctid $(CODE_COVERAGE_TEST) -cfgdir /opt/MF_Test/BMC%20AMI%20DevX%20Total%20Test/TotalTestConfiguration -u $(HCI_USER) -p $(HCI_PASSWORD) 
+        TotalTestFTCLI.sh -configuration /opt/target/configuration -a SW00000 -S /opt/KTTA/MF_Source -host $(HCI_HOST) -port $(HCI_PORT) -code 1047 -data /opt/data/total_test -r /tmp/target -f /opt/MF_Test/BMC%20AMI%20DevX%20Total%20Test/Tests/Scenarios -R -G -v 6 -log $(TOTAL_TEST_LOG_LEVEL) -ccclear true -ccrepo $(CODE_COVERAGE_REPO) -ccsys $(CODE_COVERAGE_SYSTEM) -cctid $(CODE_COVERAGE_TEST) -cfgdir /opt/MF_Test/BMC%20AMI%20DevX%20Total%20Test/TotalTestConfiguration -u $(HCI_USER) -p $(HCI_PASSWORD) 
         echo "After CLI execution"
-        cat /tmp/target/data/total_test/.metadata/.log
-        ls -lartiR /tmp/target/MF_Test/QA612Q
-        cd /tmp/target/MF_Test/QA612Q/Output
-        echo "QA612Q.cli.suiteresult"
-        cat QA612Q.cli.suiteresult
-        echo "QA612Q.cli.suite.sonar.xml"
-        cat QA612Q.cli.suite.sonar.xml
-        echo "QA612Q.cli.sonar.codecoverage.xml"
-        cat QA612Q.cli.sonar.codecoverage.xml
-        echo "QA612Q.cli.suite.junit.xml"
-        cat QA612Q.cli.suite.junit.xml
+        cat /opt/data/total_test/.metadata/.log
+        ls -lartiR /opt/MF_Test/BMC%20AMI%20DevX%20Total%20Test
+        cd /opt/MF_Test/BMC%20AMI%20DevX%20Total%20Test/Tests/Output
+        echo "CWKTCOBX.cli.suiteresult"
+        cat CWKTCOBX.cli.suiteresult
+        echo "CWKTCOBX.cli.suite.sonar.xml"
+        cat CWKTCOBX.cli.suite.sonar.xml
+        echo "CWKTCOBX.cli.sonar.codecoverage.xml"
+        cat CWKTCOBX.cli.sonar.codecoverage.xml
+        echo "CWKTCOBX.cli.suite.junit.xml"
+        cat CWKTCOBX.cli.suite.junit.xml
   - task: Bash@3
     displayName: Username & CC
     inputs:
       targetType: 'inline'
       script: |         
-        CodeCoverageCLI.sh -configuration /tmp/target/configuration -host $(HCI_HOST) -port $(HCI_PORT) -code 1047 -data /tmp/target/data/code_coverage -cc.repos $(CODE_COVERAGE_REPO) -cc.system $(CODE_COVERAGE_SYSTEM) -cc.test $(CODE_COVERAGE_TEST) -cc.sources /tmp/target/QA/MF_Source,/tmp/target/MF_Copy/QA612Q -targetFolder /tmp/target/MF_Test/QA612Q -id $(HCI_USER) -pass $(HCI_PASSWORD) -r /tmp/target -v 6 -log $(TOTAL_TEST_LOG_LEVEL) -cfgdir /tmp/target/MF_Test/BMC%20AMI%20DevX%20Total%20Test/TotalTestConfiguration
+        CodeCoverageCLI.sh -configuration /opt/target/configuration -host $(HCI_HOST) -port $(HCI_PORT) -code 1047 -data /opt/data/code_coverage -cc.repos $(CODE_COVERAGE_REPO) -cc.system $(CODE_COVERAGE_SYSTEM) -cc.test $(CODE_COVERAGE_TEST) -cc.sources /opt/KTTA/MF_Source -targetFolder /tmp/target/MF_Test -id $(HCI_USER) -pass $(HCI_PASSWORD) -r /tmp/target -v 6 -log $(TOTAL_TEST_LOG_LEVEL) -cfgdir /opt/MF_Test/BMC%20AMI%20DevX%20Total%20Test/TotalTestConfiguration
         echo "After CLI execution"
-        cat /tmp/target/data/total_test/.metadata/.log
-        ls -lartiR /tmp/target/MF_Test/QA612Q
-        cd /tmp/target/MF_Test/QA612Q/Coverage
+        cat /opt/data/total_test/.metadata/.log
+        ls -lartiR /tmp/target/MF_Test
+        cd /tmp/target/MF_Test/Coverage
         cat CodeCoverage.xml
