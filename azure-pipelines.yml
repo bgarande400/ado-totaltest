@@ -82,7 +82,7 @@ jobs:
     inputs:
       pythonInterpreter: '/usr/local/bin/python'
       scriptPath: '/opt/src/cimf_scripts/bin/download_unit_test_project.py'
-  - task: CmdLine@2
+  - task: Bash@3
     inputs:
       script: |
         cd /tmp
@@ -92,7 +92,7 @@ jobs:
         echo "//ZA0882Q JOB ('SW00000'),'TTT',CLASS=L,MSGCLASS=G,REGION=0M" > /tmp/target/MF_Test/BMC%20AMI%20DevX%20Total%20Test/TotalTestConfiguration/JCLSkeletons/JobCard.jcl
         echo "After changes"
         cat /tmp/target/MF_Test/BMC%20AMI%20DevX%20Total%20Test/TotalTestConfiguration/JCLSkeletons/JobCard.jcl
-  - task: CmdLine@2
+  - task: Bash@3
     displayName: TTT, Username & CC
     inputs:
       script: |
@@ -109,7 +109,7 @@ jobs:
         cat QA612Q.cli.sonar.codecoverage.xml
         echo "QA612Q.cli.suite.junit.xml"
         cat QA612Q.cli.suite.junit.xml
-  - task: CmdLine@2
+  - task: Bash@3
     displayName: Username & CC
     inputs:
       script: |         
