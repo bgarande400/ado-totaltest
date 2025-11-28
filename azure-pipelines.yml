@@ -58,6 +58,8 @@ jobs:
       CI_PIPELINE_TEAMS_LINK: $(CI_PIPELINE_TEAMS_LINK)
       ARTIFACT_DIRECTORY: $(job_name)
       DEVX_SET_TASK_LIST: $(devx_set_task_list)
+      HCI_PASSWORD: $(HCI_PASSWORD)
+      HCI_USER: $(HCI_USER)
   steps:
   - task: PythonScript@0
     displayName: 'Download COBOL Source'
