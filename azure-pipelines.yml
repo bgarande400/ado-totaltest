@@ -90,11 +90,11 @@ jobs:
         echo "check current directory"
         cd /opt
         ls -lartiR
-        cat /MF_Test/BMC%20AMI%20DevX%20Total%20Test/TotalTestConfiguration/JCLSkeletons/JobCard.jcl
+        cat MF_Test/BMC%20AMI%20DevX%20Total%20Test/TotalTestConfiguration/JCLSkeletons/JobCard.jcl
         echo "Before changes"
-        echo "//ZA0882Q JOB ('SW00000'),'TTT',CLASS=L,MSGCLASS=G,REGION=0M" > /MF_Test/BMC%20AMI%20DevX%20Total%20Test/TotalTestConfiguration/JCLSkeletons/JobCard.jcl
+        echo "//ZA0882Q JOB ('SW00000'),'TTT',CLASS=L,MSGCLASS=G,REGION=0M" > MF_Test/BMC%20AMI%20DevX%20Total%20Test/TotalTestConfiguration/JCLSkeletons/JobCard.jcl
         echo "After changes"
-        cat /MF_Test/BMC%20AMI%20DevX%20Total%20Test/TotalTestConfiguration/JCLSkeletons/JobCard.jcl
+        cat MF_Test/BMC%20AMI%20DevX%20Total%20Test/TotalTestConfiguration/JCLSkeletons/JobCard.jcl
   - task: Bash@3
     displayName: TTT, Username & CC
     inputs:
