@@ -86,7 +86,8 @@ jobs:
     displayName: Update JOB Card
     inputs:
       script: |
-        cd /tmp
+        echo "check current directory"
+        pwd
         ls -lartiR
         cat /opt/MF_Test/BMC%20AMI%20DevX%20Total%20Test/TotalTestConfiguration/JCLSkeletons/JobCard.jcl
         echo "Before changes"
