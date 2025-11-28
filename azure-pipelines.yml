@@ -100,7 +100,7 @@ jobs:
     inputs:
       targetType: 'inline'
       script: |
-        TotalTestFTCLI.sh -configuration /opt/target/configuration -a SW00000 -S /opt/KTTA/MF_Source -host $(HCI_HOST) -port $(HCI_PORT) -code 1047 -data /opt/data/total_test -r /tmp/target -f /opt/MF_Test/BMC%20AMI%20DevX%20Total%20Test/Tests/Scenarios -R -G -v 6 -log $(TOTAL_TEST_LOG_LEVEL) -ccclear true -ccrepo $(CODE_COVERAGE_REPO) -ccsys $(CODE_COVERAGE_SYSTEM) -cctid $(CODE_COVERAGE_TEST) -cfgdir /opt/MF_Test/BMC%20AMI%20DevX%20Total%20Test/TotalTestConfiguration -u $(HCI_USER) -p $(HCI_PASSWORD) 
+        TotalTestFTCLI.sh -configuration /opt/target/configuration -a SW00000 -S /opt/KTTA/MF_Source -host $(HCI_HOST) -port $(HCI_PORT) -code 1047 -data /opt/data/total_test -r /opt/MF_Test/BMC%20AMI%20DevX%20Total%20Test/Tests -f /opt/MF_Test/BMC%20AMI%20DevX%20Total%20Test/Tests/Scenarios -R -G -v 6 -log $(TOTAL_TEST_LOG_LEVEL) -ccclear true -ccrepo $(CODE_COVERAGE_REPO) -ccsys $(CODE_COVERAGE_SYSTEM) -cctid $(CODE_COVERAGE_TEST) -cfgdir /opt/MF_Test/BMC%20AMI%20DevX%20Total%20Test/TotalTestConfiguration -u $(HCI_USER) -p $(HCI_PASSWORD) 
         echo "After CLI execution"
         cat /opt/data/total_test/.metadata/.log
         ls -lartiR /opt/MF_Test/BMC%20AMI%20DevX%20Total%20Test
