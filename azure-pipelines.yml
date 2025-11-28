@@ -90,22 +90,22 @@ jobs:
         echo "check current directory"
         cd /opt
         ls -lartiR
-        cat MF_Test/BMC%20AMI%20DevX%20Total%20Test/TotalTestConfiguration/JCLSkeletons/JobCard.jcl
+        cat MF_Test/BMC_TotalTest/TotalTestConfiguration/JCLSkeletons/JobCard.jcl
         echo "Before changes"
-        echo "//ZA0882Q JOB ('SW00000'),'TTT',CLASS=L,MSGCLASS=G,REGION=0M" > MF_Test/BMC%20AMI%20DevX%20Total%20Test/TotalTestConfiguration/JCLSkeletons/JobCard.jcl
+        echo "//ZA0882Q JOB ('SW00000'),'TTT',CLASS=L,MSGCLASS=G,REGION=0M" > MF_Test/BMC_TotalTest/TotalTestConfiguration/JCLSkeletons/JobCard.jcl
         echo "After changes"
-        cat MF_Test/BMC%20AMI%20DevX%20Total%20Test/TotalTestConfiguration/JCLSkeletons/JobCard.jcl
+        cat MF_Test/BMC_TotalTest/TotalTestConfiguration/JCLSkeletons/JobCard.jcl
   - task: Bash@3
     displayName: TTT, Username & CC
     inputs:
       targetType: 'inline'
       script: |
         cd /opt
-        TotalTestFTCLI.sh -configuration target/configuration -a SW00000 -S ../KTTA/MF_Source -host $(HCI_HOST) -port $(HCI_PORT) -code 1047 -data data/total_test -r /opt/MF_Test/BMC%20AMI%20DevX%20Total%20Test/Tests -f Scenarios -R -G -v 6 -log $(TOTAL_TEST_LOG_LEVEL) -ccclear true -ccrepo $(CODE_COVERAGE_REPO) -ccsys $(CODE_COVERAGE_SYSTEM) -cctid $(CODE_COVERAGE_TEST) -cfgdir /opt/MF_Test/BMC%20AMI%20DevX%20Total%20Test/TotalTestConfiguration -u $(HCI_USER) -p $(HCI_PASSWORD) 
+        TotalTestFTCLI.sh -configuration target/configuration -a SW00000 -S ../KTTA/MF_Source -host $(HCI_HOST) -port $(HCI_PORT) -code 1047 -data data/total_test -r /opt/MF_Test/BMC_TotalTest/Tests -f Scenarios -R -G -v 6 -log $(TOTAL_TEST_LOG_LEVEL) -ccclear true -ccrepo $(CODE_COVERAGE_REPO) -ccsys $(CODE_COVERAGE_SYSTEM) -cctid $(CODE_COVERAGE_TEST) -cfgdir /opt/MF_Test/BMC_TotalTest/TotalTestConfiguration -u $(HCI_USER) -p $(HCI_PASSWORD) 
         echo "After CLI execution"
         cat data/total_test/.metadata/.log
-        ls -lartiR MF_Test/BMC%20AMI%20DevX%20Total%20Test
-        cd /opt/MF_Test/BMC%20AMI%20DevX%20Total%20Test/Tests/Output
+        ls -lartiR MF_Test/BMC_TotalTest
+        cd /opt/MF_Test/BMC_TotalTest/Tests/Output
         echo "CWKTCOBX.cli.suiteresult"
         cat CWKTCOBX.cli.suiteresult
         echo "CWKTCOBX.cli.suite.sonar.xml"
@@ -119,7 +119,7 @@ jobs:
     inputs:
       targetType: 'inline'
       script: |         
-        CodeCoverageCLI.sh -configuration /opt/target/configuration -host $(HCI_HOST) -port $(HCI_PORT) -code 1047 -data /opt/data/code_coverage -cc.repos $(CODE_COVERAGE_REPO) -cc.system $(CODE_COVERAGE_SYSTEM) -cc.test $(CODE_COVERAGE_TEST) -cc.sources /opt/KTTA/MF_Source -targetFolder /tmp/target/MF_Test -id $(HCI_USER) -pass $(HCI_PASSWORD) -r /tmp/target -v 6 -log $(TOTAL_TEST_LOG_LEVEL) -cfgdir /opt/MF_Test/BMC%20AMI%20DevX%20Total%20Test/TotalTestConfiguration
+        CodeCoverageCLI.sh -configuration /opt/target/configuration -host $(HCI_HOST) -port $(HCI_PORT) -code 1047 -data /opt/data/code_coverage -cc.repos $(CODE_COVERAGE_REPO) -cc.system $(CODE_COVERAGE_SYSTEM) -cc.test $(CODE_COVERAGE_TEST) -cc.sources /opt/KTTA/MF_Source -targetFolder /tmp/target/MF_Test -id $(HCI_USER) -pass $(HCI_PASSWORD) -r /tmp/target -v 6 -log $(TOTAL_TEST_LOG_LEVEL) -cfgdir /opt/MF_Test/BMC_TotalTest/TotalTestConfiguration
         echo "After CLI execution"
         cat /opt/data/total_test/.metadata/.log
         ls -lartiR /tmp/target/MF_Test
