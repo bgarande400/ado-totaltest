@@ -119,7 +119,7 @@ jobs:
     inputs:
       targetType: 'inline'
       script: |         
-        CodeCoverageCLI.sh -configuration /opt/target/configuration -host $(HCI_HOST) -port $(HCI_PORT) -code 1047 -data /opt/data/code_coverage -cc.repos $(CODE_COVERAGE_REPO) -cc.system $(CODE_COVERAGE_SYSTEM) -cc.test $(CODE_COVERAGE_TEST) -cc.sources /opt/KTTA/MF_Source -targetFolder /tmp/target/MF_Test -id $(HCI_USER) -pass $(HCI_PASSWORD) -r /tmp/target -v 6 -log $(TOTAL_TEST_LOG_LEVEL) -cfgdir /opt/MF_Test/BMC_TotalTest/TotalTestConfiguration
+        CodeCoverageCLI.sh -configuration /opt/target/configuration -host $(HCI_HOST) -port $(HCI_PORT) -code 1047 -data /opt/data/code_coverage -cc.repos $(CODE_COVERAGE_REPO) -cc.system $(CODE_COVERAGE_SYSTEM) -cc.test $(CODE_COVERAGE_TEST) -cc.sources /opt/KTTA/MF_Source -targetFolder /tmp/target/MF_Test -id $(HCI_USER) -pass $(HCI_PASSWORD) -v 6 -timeout '0'
         echo "After CLI execution"
         cat /opt/data/total_test/.metadata/.log
         ls -lartiR /tmp/target/MF_Test
