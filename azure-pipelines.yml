@@ -101,11 +101,11 @@ jobs:
       targetType: 'inline'
       script: |
         cd /opt
-        TotalTestFTCLI.sh -configuration target/configuration -a SW00000 -S ../KTTA/MF_Source -host $(HCI_HOST) -port $(HCI_PORT) -code 1047 -data data/total_test -r /opt/MF_Test/BMC%20AMI%20DevX%20Total%20Test/Tests -f /Scenarios -R -G -v 6 -log $(TOTAL_TEST_LOG_LEVEL) -ccclear true -ccrepo $(CODE_COVERAGE_REPO) -ccsys $(CODE_COVERAGE_SYSTEM) -cctid $(CODE_COVERAGE_TEST) -cfgdir MF_Test/BMC%20AMI%20DevX%20Total%20Test/TotalTestConfiguration -u $(HCI_USER) -p $(HCI_PASSWORD) 
+        TotalTestFTCLI.sh -configuration target/configuration -a SW00000 -S ../KTTA/MF_Source -host $(HCI_HOST) -port $(HCI_PORT) -code 1047 -data data/total_test -r /opt/MF_Test/BMC%20AMI%20DevX%20Total%20Test/Tests -f Scenarios -R -G -v 6 -log $(TOTAL_TEST_LOG_LEVEL) -ccclear true -ccrepo $(CODE_COVERAGE_REPO) -ccsys $(CODE_COVERAGE_SYSTEM) -cctid $(CODE_COVERAGE_TEST) -cfgdir MF_Test/BMC%20AMI%20DevX%20Total%20Test/TotalTestConfiguration -u $(HCI_USER) -p $(HCI_PASSWORD) 
         echo "After CLI execution"
         cat data/total_test/.metadata/.log
         ls -lartiR MF_Test/BMC%20AMI%20DevX%20Total%20Test
-        cd MF_Test/BMC%20AMI%20DevX%20Total%20Test/Tests/Output
+        cd /opt/MF_Test/BMC%20AMI%20DevX%20Total%20Test/Tests/Output
         echo "CWKTCOBX.cli.suiteresult"
         cat CWKTCOBX.cli.suiteresult
         echo "CWKTCOBX.cli.suite.sonar.xml"
