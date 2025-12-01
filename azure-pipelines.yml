@@ -102,18 +102,18 @@ jobs:
       script: |
         cd /opt
         TotalTestFTCLI.sh -configuration target/configuration -a SW00000 -S ../KTTA/MF_Source -host $(HCI_HOST) -port $(HCI_PORT) -code 1047 -data data/total_test -r /opt/MF_Test/$(ADO_PROJECT)/Tests -f Scenarios -R -G -v 6 -log $(TOTAL_TEST_LOG_LEVEL) -ccclear true -ccrepo $(CODE_COVERAGE_REPO) -ccsys $(CODE_COVERAGE_SYSTEM) -cctid $(CODE_COVERAGE_TEST) -cfgdir /opt/MF_Test/$(ADO_PROJECT)/TotalTestConfiguration -u $(HCI_USER) -p $(HCI_PASSWORD) 
-#        echo "After CLI execution"
-#        cat data/total_test/.metadata/.log
-#        ls -lartiR MF_Test/BMC_TotalTest
-#        cd /opt/MF_Test/BMC_TotalTest/Tests/Output
-#        echo "CWKTCOBX.cli.suiteresult"
-#        cat CWKTCOBX.cli.suiteresult
-#        echo "CWKTCOBX.cli.suite.sonar.xml"
-#        cat CWKTCOBX.cli.suite.sonar.xml
-#        echo "CWKTCOBX.cli.sonar.codecoverage.xml"
-#        cat CWKTCOBX.cli.sonar.codecoverage.xml
-#        echo "CWKTCOBX.cli.suite.junit.xml"
-#        cat CWKTCOBX.cli.suite.junit.xml
+        echo "After CLI execution"
+        cat /opt/data/total_test/.metadata/.log
+        ls -lartiR /opt/MF_Test/$(ADO_PROJECT)
+        cd /opt/MF_Test/$(ADO_PROJECT)/Tests/Output
+        echo "Scenarios.cli.suiteresult"
+        cat Scenarios.cli.suiteresult
+        echo "Scenarios.cli.suite.sonar.xml"
+        cat Scenarios.cli.suite.sonar.xml
+        echo "Scenarios.cli.sonar.codecoverage.xml"
+        cat Scenarios.cli.sonar.codecoverage.xml
+        echo "Scenarios.cli.suite.junit.xml"
+        cat Scenarios.cli.suite.junit.xml
   - task: Bash@3
     displayName: Username & CC
     inputs:
